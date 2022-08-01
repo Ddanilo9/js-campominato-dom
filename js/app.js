@@ -7,7 +7,8 @@ let selectedValue = document.getElementById('livelli')  //recupero la selezione 
 griglia.innerHTML= ""
 // console.log(griglia)
 let posizioniBombe = []//******************** */
-
+const boxPunteggio = document.getElementById('points')
+let punteggio = 0
 
 function getLevelMode(input) {   //funzione per la selezione dei livelli
     let level = parseInt(input.value);
@@ -22,7 +23,9 @@ function getLevelMode(input) {   //funzione per la selezione dei livelli
 btnPlay.addEventListener('click', function(){   //al click del bottone 
     let livelloDifficolta = getLevelMode(selectedValue);
     let gridSize = 10; 
-    
+    reset()
+    boxPunteggio.classList.remove('box-punteggio')
+    resetPunteggio()
 
     if (livelloDifficolta === 'livello 2') {
         gridSize = 9;
@@ -61,10 +64,17 @@ function createSquareEl() {
 function clickHandler() {
     const square = this;
     let numeroCella = parseInt(square.innerHTML)
-    square.classList.add('success'); 
-    if (posizioniBombe.includes(numeroCella)) {
+    
+    if (!posizioniBombe.includes(numeroCella)) {
+        square.classList.add('success'); 
+        punteggio++
+        console.log(punteggio)
+    } else {
         square.classList.remove('success');
         square.classList.add('lose');
+        boxPunteggio.classList.add('box-punteggio')
+        boxPunteggio.innerHTML = ('Hai totalizzato: ') + punteggio + ' punti'
+        
     }
     // console.log(numeroCella)
     // console.log(posizioniBombe.includes(numeroCella))
@@ -87,3 +97,9 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
   }
   
+  function reset () {
+    griglia.innerHTML= ""
+  }
+  function resetPunteggio() {
+    punteggio = 0
+  }
